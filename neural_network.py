@@ -49,3 +49,5 @@ class NeuralNetwork:
         n_samples = y.shape[0]
         log_likelihood = -np.log(output[range(n_samples), np.argmax(y, axis=1)])
         return np.sum(log_likelihood) / n_samples
+
+

@@ -1,10 +1,11 @@
+
 import pygame
 import numpy as np
 from data_loader import load_data
 from neural_network import NeuralNetwork
-from visualization import visualize_network
 from utils import preprocess_digit
-import traceback  # For debugging
+import traceback
+from network_visualizer import visualize_network
 
 # Constants
 INPUT_SIZE = 784
@@ -15,14 +16,11 @@ EPOCHS = 10
 BATCH_SIZE = 64
 LEARNING_RATE = 0.001
 
-
 def train_nn_with_visualization(nn, x_train, y_train, x_test, y_test, epochs, batch_size, learning_rate):
     print("🚀 Training Started...")
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((1300, 600))
     pygame.display.set_caption("Neural Network Training Visualization")
-
-    running = True  # Flag to keep track if the window is open
 
     for epoch in range(epochs):
         indices = np.arange(x_train.shape[0])
@@ -33,15 +31,7 @@ def train_nn_with_visualization(nn, x_train, y_train, x_test, y_test, epochs, ba
         epoch_correct = 0
 
         for batch_idx, i in enumerate(range(0, x_train.shape[0], batch_size)):
-            # Process Pygame events to avoid freezing
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-                    pygame.quit()
-                    return  # Exit training if window is closed
-
-            if not running:
-                break  # Stop training if Pygame window is closed
+            pygame.event.pump()
 
             x_batch, y_batch = x_train[i:i + batch_size], y_train[i:i + batch_size]
             outputs = nn.forward(x_batch)
@@ -55,28 +45,27 @@ def train_nn_with_visualization(nn, x_train, y_train, x_test, y_test, epochs, ba
             epoch_loss += batch_loss
             epoch_correct += batch_correct
 
-            predicted_index = batch_predictions[0]  # First sample prediction
+            predicted_index = batch_predictions[0]
 
-            # Update visualization without freezing
-            visualize_network(screen, nn, INPUT_SIZE, HIDDEN_SIZE_1, HIDDEN_SIZE_2, OUTPUT_SIZE, epoch, batch_idx, predicted_index)
-            pygame.display.flip()  # Ensure updates are reflected
-            pygame.time.delay(10)  # Small delay to prevent excessive CPU usage
+            visualize_network(
+                screen, nn, INPUT_SIZE, HIDDEN_SIZE_1, HIDDEN_SIZE_2, OUTPUT_SIZE,
+                epoch, batch_idx, predicted_index,
+                epoch_loss, (epoch_correct / ((batch_idx + 1) * batch_size)) * 100, 0, 0, epochs
+            )
 
-        if not running:
-            break  # Stop training if window is closed
-
-        # Compute average loss and accuracy per epoch
-        epoch_loss /= (x_train.shape[0] / batch_size)
-        epoch_accuracy = epoch_correct / x_train.shape[0]
-
+        # Compute test accuracy
         test_outputs = nn.forward(x_test)
         test_loss = nn.cross_entropy_loss(y_test, test_outputs)
-        test_accuracy = np.mean(np.argmax(test_outputs, axis=1) == np.argmax(y_test, axis=1))
+        test_predictions = np.argmax(test_outputs, axis=1)
+        test_true_labels = np.argmax(y_test, axis=1)
+        test_accuracy = np.mean(test_predictions == test_true_labels) * 100
 
-        print(f"🎯 Epoch {epoch + 1}/{epochs} -> Train Loss: {epoch_loss:.4f}, Train Accuracy: {epoch_accuracy:.4f}")
-        print(f"📊 Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
+        print(f"🎯 Epoch {epoch + 1}/{epochs} -> Train Loss: {epoch_loss:.4f}, Train Accuracy: {(epoch_correct / x_train.shape[0]) * 100:.2f}%")
+        print(f"📊 Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.2f}%")
 
     pygame.quit()
+
+
 
 
 
