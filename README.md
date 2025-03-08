@@ -1,110 +1,142 @@
----
+# 🚀 Neural Network for Handwritten Digit Recognition 🧠✍️
 
-#### 📂 **Project: Neural Network for Handwritten Digit Recognition**  
-A fully connected **Neural Network** built from scratch to recognize handwritten digits. 🧠✍️  
-This project includes **real-time visualization** of the training process and a **drawing interface** for user input.
+This project is a **custom-built neural network** that recognizes handwritten digits from the **MNIST dataset** and provides **real-time training visualization**. Users can also **draw a digit**, and the trained model will predict the number. 🔢✨
 
 ---
 
-## 🌟 **Features**
-✅ **Train a Neural Network from Scratch** – No deep learning frameworks, only NumPy!  
-✅ **Interactive Training Visualization** – Watch the network learn with real-time updates.  
-✅ **Handwritten Digit Prediction** – Draw a digit and see what the model predicts.  
-✅ **Custom Neural Network Implementation** – Forward propagation, backpropagation, and training are implemented manually.  
-✅ **Pygame-Based UI** – Visualize neural connections and weights dynamically.
+## 🌟 Features
+✅ **Train a Fully Connected Neural Network from Scratch** (No TensorFlow or PyTorch!)  
+✅ **Interactive Training Visualization** – Observe neuron activations, weights, and accuracy in real-time 🎨📊  
+✅ **Live Drawing Interface** – Draw a digit and get predictions instantly ✍️🤖  
+✅ **Custom Implementation of Forward & Backpropagation** – Full control over weight updates and learning process ⚙️  
+✅ **Optimized Training with Mini-Batches** – Speeds up learning and improves accuracy 📈  
+✅ **Dependencies Managed via requirements.txt** – Easily install all required libraries 📦
 
 ---
 
-## 📊 **Dataset**
-This project uses the **MNIST dataset** 📄, a collection of **70,000** handwritten digits (0-9).  
-- **🗂 Source**: Fetched using `fetch_openml('mnist_784')` from **scikit-learn**.  
-- **🔢 Format**: Each digit is represented as a **28x28 grayscale image** (784 pixels).  
-- **📌 Processing**: Normalized to [0,1] range and converted to one-hot encoded labels.  
+## 📊 Dataset: MNIST
+This project uses the **MNIST dataset**, a collection of **70,000 handwritten digits (0-9)**.
+
+🔹 **Where is the dataset loaded from?**  
+📌 The dataset is **fetched from OpenML** using `scikit-learn`:
+```python
+from sklearn.datasets import fetch_openml
+mnist_data = fetch_openml(name="mnist_784", version=1, as_frame=False)
+```
+
+🔹 **How is the data processed?**  
+✅ **Normalization:** Pixel values are scaled between **[0,1]**.  
+✅ **One-hot Encoding:** Converts labels (0-9) into a **binary vector** format.  
+✅ **Training & Testing Split:** The dataset is divided into **60,000 training** and **10,000 test samples**.  
 
 ---
 
-## 📁 **Project Structure**
+## 📂 Project Structure
 ```bash
-Neural-Network-Handwritten-Digit-Recognition
-│── .venv/                # Virtual environment (optional)
-│── data_loader.py        # Loads MNIST dataset
-│── main.py               # Main script (trains model & user input interface)
-│── network_visualizer.py # Visualizes training process using Pygame
-│── neural_network.py     # Fully connected neural network implementation
-│── utils.py              # Preprocessing functions (centering, resizing, smoothing)
-│── README.md             # Project documentation
-│── .gitignore            # Ignore unnecessary files
-└── requirements.txt      # Required Python packages (to be generated)
+📦 Neural-Network-Handwritten-Digit-Recognition
+ ┣ 📂 .venv/                 # Virtual environment (optional)
+ ┣ 📜 .gitignore             # Ignore unnecessary files
+ ┣ 📜 data_loader.py         # Loads and preprocesses the MNIST dataset
+ ┣ 📜 main.py                # Main script: training, visualization, and prediction
+ ┣ 📜 network_visualizer.py  # Visualizes neural network structure using Pygame
+ ┣ 📜 neural_network.py      # Neural Network implementation (forward & backpropagation)
+ ┣ 📜 utils.py               # Digit preprocessing functions (resize, normalize, center)
+ ┣ 📜 requirements.txt       # Required dependencies
+ ┣ 📜 README.md              # Project documentation (this file)
 ```
 
 ---
 
-## 🛠 **Installation & Setup**
-### 1️⃣ **Clone the Repository**
+## 📦 Required Libraries
+```bash
+numpy           # Matrix operations 🧮
+pygame          # GUI & visualization 🎮
+matplotlib      # Graphs & plots 📊
+scipy           # Image processing ⚙️
+scikit-learn    # Dataset handling 🔍
+scikit-image    # Resizing & preprocessing 🖼
+```
+
+To install all dependencies, run:
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 🛠 Installation & Setup
+### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/yourusername/Neural-Network-Handwritten-Digit-Recognition.git
 cd Neural-Network-Handwritten-Digit-Recognition
 ```
 
-### 2️⃣ **Install Dependencies**
+### 2️⃣ Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-#### 🏗 **Required Libraries**
-- `numpy` 🧮 (Matrix operations)
-- `pygame` 🎮 (GUI & visualization)
-- `matplotlib` 📊 (Graphs & plots)
-- `scipy` ⚙️ (Image processing)
-- `scikit-learn` 🔍 (Dataset handling)
-- `scikit-image` 🖼 (Resizing & preprocessing)
-
-### 3️⃣ **Run the Training Script**
+### 3️⃣ Run the Training Script
 ```bash
 python main.py
 ```
-🚀 The neural network will start training, and the **visualization will be displayed**.
+🚀 The neural network will start training, and a **visualization window** will open.
 
 ---
 
-## 🎨 **Drawing & Prediction**
-1. 🖊 **Draw a digit** in the Pygame window.  
-2. 🧠 The network processes the drawing and predicts the digit.  
-3. 🎯 The predicted number is displayed in the console.
+## 🎨 Drawing & Prediction
+1. **A Pygame window will appear** where you can draw a digit. ✍️  
+2. **The network processes the image** and predicts the digit. 🧠  
+3. **The result is displayed in the console.** 🎯  
 
 ---
 
-## 🏗 **How It Works (Neural Network Structure)**
-The network follows a **fully connected architecture**:
+## 🏗 Neural Network Architecture
 ```
 Input Layer (784) → Hidden Layer 1 (512 neurons, ReLU) → Hidden Layer 2 (256 neurons, ReLU) → Output Layer (10, Softmax)
 ```
-**🟢 Forward Propagation:**  
-- Input → Weighted Sum → Activation (ReLU) → Output  
-- Last layer uses **Softmax** for probability distribution.
+📌 **Forward Propagation**
+```python
+self.hidden1_input = np.dot(x, self.weights_input_hidden1) + self.bias_hidden1
+self.hidden1_output = np.maximum(0, self.hidden1_input)  # ReLU Activation
+self.hidden2_input = np.dot(self.hidden1_output, self.weights_hidden1_hidden2) + self.bias_hidden2
+self.hidden2_output = np.maximum(0, self.hidden2_input)  # ReLU Activation
+self.output_input = np.dot(self.hidden2_output, self.weights_hidden2_output) + self.bias_output
+return self.softmax(self.output_input)
+```
 
-**🔄 Backpropagation:**  
-- Calculates error using **Cross Entropy Loss**.  
-- Updates weights using **Gradient Descent**.  
-
----
-
-## 📈 **Visualization Components**
-- **Neurons**: White circles  
-- **Connections**: Green (positive weights), Red (negative weights)  
-- **Training Accuracy Graph**: Updates live on the right side  
-
----
-
-## 📝 **Possible Enhancements**
-✅ **Switch to CNNs** – Improve accuracy using convolutional layers.  
-✅ **Batch Normalization** – Speed up convergence.  
-✅ **Clear Button for Drawing UI** – Improve user experience.  
+📌 **Backpropagation**
+```python
+output_error = output - y
+hidden2_error = np.dot(output_error, self.weights_hidden2_output.T) * (self.hidden2_input > 0)
+hidden1_error = np.dot(hidden2_error, self.weights_hidden1_hidden2.T) * (self.hidden1_input > 0)
+```
 
 ---
 
-## 👨‍💻 **Author**
-📌 **Lahiru Prasad**  
-💬 **Contact:** 
+## 📊 Prediction Accuracy
+During training, the model achieves **high accuracy**, and test accuracy typically reaches around **97-99%**. 🎯  
+Each epoch prints the current accuracy in the console, showing improvement over time:
+```plaintext
+Epoch 10/20 -> Train Accuracy: 96.57%
+Test Accuracy: 97.52%
+Epoch 15/20 -> Train Accuracy: 99.38%
+Test Accuracy: 97.92%
+Epoch 20/20 -> Train Accuracy: 99.83%
+Test Accuracy: 97.99%
+```
 
 ---
+
+## 🔧 Technologies Used
+| Feature                 | Library        |
+|-------------------------|---------------|
+| **Machine Learning**    | NumPy, scikit-learn |
+| **Visualization**       | Pygame        |
+| **Data Processing**     | Scipy, scikit-image |
+| **Mathematics**        | NumPy (Matrix operations) |
+| **Neural Network**      | Fully custom Python implementation |
+
+---
+
+
