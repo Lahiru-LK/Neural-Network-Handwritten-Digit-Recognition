@@ -2,6 +2,8 @@
 
 This project is a **custom-built neural network** that recognizes handwritten digits from the **MNIST dataset** and provides **real-time training visualization**. Users can also **draw a digit**, and the trained model will predict the number. 🔢✨
 
+![Screenshot 2025-03-08 101639](https://github.com/user-attachments/assets/f766a124-bc57-4f00-8530-ca0058c04eae)
+
 ---
 
 ## 🌟 Features
